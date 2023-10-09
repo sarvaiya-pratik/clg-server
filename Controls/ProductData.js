@@ -2,7 +2,7 @@
 import DataModel from '../models/productdata.js';
 
 import cloudinary from "cloudinary"
-cloudinary.config({
+cloudinary.v2.config({
     cloud_name: 'dvnubzprf',
     api_key: '355881747719519',
     api_secret: 'N9twT6TyEA79iaVrisgngm-rm6I'
