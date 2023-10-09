@@ -1,11 +1,13 @@
 
 import DataModel from '../models/productdata.js';
+import dotenv from "dotenv"
+dotenv.config()
 
 import cloudinary from "cloudinary"
 cloudinary.v2.config({
-    cloud_name: 'dvnubzprf',
-    api_key: '355881747719519',
-    api_secret: 'N9twT6TyEA79iaVrisgngm-rm6I'
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.ACCESS_KEY,
+    api_secret: process.env.API_SECRET
 });
 // this is with cloudnary
 const AddProductData = async (req, res) => {
