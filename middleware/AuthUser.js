@@ -21,7 +21,6 @@ export const AuthUser = async (req, res, next) => {
            let userdet = await UserModel.findOne({ _id: UserId}).select('-password')
            
             req.user = userdet;
-
             next()
         } catch (error) {
             console.log("UnAuthorization bro !")
