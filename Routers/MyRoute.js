@@ -4,7 +4,6 @@ const Router = express.Router();
 // USER
 import  { LoginCotrol,forgatePassword,resentOtp,resetPassword,varifyOtp, RegisterControl, GetUserData, deleteUser,updateUserActive,updateUserInactive } from "../Controls/User.js"
 // ADMIN
-
 import AdminControl from "../Controls/Admin.js";
 // PRODUCT
 import { AddProductData, GetProductData, updateProductActive,updateProductInactive  } from "../Controls/ProductData.js"
@@ -17,10 +16,19 @@ import { OderDetail, report, getOrderDetail,updateOrderActive,updateOrderInactiv
 // Middleware for Authentication
 import { AuthUser } from "../middleware/AuthUser.js";
 
-
-import multer from "multer";
-const storage = multer.memoryStorage();
-const upload = multer({ storage })
+import multer from "multer"
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null,"../client/src/imges/");
+    },
+    filename: (req, file, cb) => {
+      // Use a unique filename for each uploaded file
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+      cb(null, file.fieldname + '-' + uniqueSuffix + '.' + file.mimetype.split('/')[1]);
+    },
+  });
+  
+  const upload = multer({ storage });
 
 // ----------------ROUTES-----------------
 

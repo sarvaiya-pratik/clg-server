@@ -1,15 +1,17 @@
 
 import DataModel from '../models/productdata.js';
-import dotenv from "dotenv"
-dotenv.config()
-
-import cloudinary from "cloudinary"
-cloudinary.v2.config({
-    cloud_name: process.env.CLOUD_NAME,
-    api_key: process.env.ACCESS_KEY,
-    api_secret: process.env.API_SECRET
-});
+// import cloudinary from "cloudinary"
+// cloudinary.v2.config({
+//     cloud_name: 'dvnubzprf',
+//     api_key: '355881747719519',
+//     api_secret: 'N9twT6TyEA79iaVrisgngm-rm6I'
+// });
 // this is with cloudnary
+
+// multer 
+
+
+
 const AddProductData = async (req, res) => {
     const { title, catagory, shape, price, carat, colour, clarity, cut, polish, symmetry, fluorescence, measurements, table, depth, ratio, crownangle, crownheight, pavilionangle, paviliondepth, } = req.body;
     if (title && catagory && shape && carat && price) {
@@ -18,33 +20,44 @@ const AddProductData = async (req, res) => {
             res.json({ message: "Data Alreay Exist !" })
         }
         else {
-            if (req.file) {
-                const transformationOptions = {
-                    width: 300,
-                    height: 300,
-                    crop: 'fill',
-                };
-
-                cloudinary.uploader.upload_stream(
-                    { transformation: transformationOptions },
-                    async (error, result) => {
-                        if (error) {
-                            console.error(error);
-                            return res.status(500).json({ message: 'Upload failed' });
-                        }
-                        // let newcount = await DataModel.countDocuments() + 1
-                        let doc = await new DataModel({ title, catagory, "threesixty": result.secure_url, shape, price, carat, colour, clarity, cut, polish, symmetry, fluorescence, table, depth, ratio, crownangle, crownheight, pavilionangle, paviliondepth, })
-                        await doc.save();
-                        res.status(201).send("Record insert successfully")
-
-                    }).end(req.file.buffer);
-
-
+            if (!req.file) {
+                return res.json({ message: "error in file img" })
             }
-            // POST || ADD-PRODUCTS
             else {
-                res.json({ message: "error in file img" })
+                // const imageUrl = `${req.protocol}://${req.get('host')}/${req.file.path}`;
+                const imageUrl = req.file.filename
+                let doc = await new DataModel({ title, catagory, "threesixty": imageUrl, shape, price, carat, colour, clarity, cut, polish, symmetry, fluorescence, table, depth, ratio, crownangle, crownheight, pavilionangle, paviliondepth, })
+                await doc.save();
+                return res.status(201).send("Record insert successfully")
             }
+            // if (req.file) {
+            //     console.log("req.file")
+            //     const transformationOptions = {
+            //         width: 300,
+            //         height: 300,
+            //         crop: 'fill',
+            //     };
+            //      cloudinary.uploader.upload_stream(
+            //         { transformation: transformationOptions },
+            //         async (error, result) => {
+            //             if (error) {
+            //                 console.error(error);
+            //                 return res.status(500).json({ message: 'Upload failed' });
+            //             }
+            //             console.log("unser cloud")
+            //             // let newcount = await DataModel.countDocuments() + 1
+            //             let doc = await new DataModel({ title, catagory, "threesixty": result.secure_url, shape, price, carat, colour, clarity, cut, polish, symmetry, fluorescence, table, depth, ratio, crownangle, crownheight, pavilionangle, paviliondepth, })
+            //             await doc.save();
+            //         return res.status(201).send("Record insert successfully")
+
+            //         }).end(req.file.buffer);
+
+            // }
+
+            // else {
+            //     console.log("error in file img")
+            //     res.json({ message: "error in file img" })
+            // }
         }
     }
     else {
@@ -60,8 +73,6 @@ const AddProductData = async (req, res) => {
 //             res.json({ message: "Data Alreay Exist !" })
 //         }
 //         else {
-
-
 
 //                 }
 
@@ -127,4 +138,4 @@ const updateProductInactive = async (req, res) => {
 //     }
 // }
 
-export  { AddProductData, GetProductData, updateProductActive, updateProductInactive }
+export { AddProductData, GetProductData, updateProductActive, updateProductInactive }
