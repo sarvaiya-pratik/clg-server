@@ -2,33 +2,33 @@
 import express from "express";
 const Router = express.Router();
 // USER
-import  { LoginCotrol,forgatePassword,resentOtp,resetPassword,varifyOtp, RegisterControl, GetUserData, deleteUser,updateUserActive,updateUserInactive } from "../Controls/User.js"
+import { LoginCotrol, forgatePassword, resentOtp, resetPassword, varifyOtp, RegisterControl, GetUserData, deleteUser, updateUserActive, updateUserInactive } from "../Controls/User.js"
 // ADMIN
 import AdminControl from "../Controls/Admin.js";
 // PRODUCT
-import { AddProductData, GetProductData, updateProductActive,updateProductInactive  } from "../Controls/ProductData.js"
+import { AddProductData, GetProductData, updateProductActive, updateProductInactive } from "../Controls/ProductData.js"
 // FEEDBACK
 import { addFeedback, getFeedback, deleteFeedback } from "../Controls/Feedback.js"
 // CART
 import { getCart, incCart, decCart, delCart, addCart } from "../Controls/Cart.js"
 // ORDER
-import { OderDetail, report, getOrderDetail,updateOrderActive,updateOrderInactive} from "../Controls/Order.js"
+import { OderDetail, report, getOrderDetail, updateOrderActive, updateOrderInactive } from "../Controls/Order.js"
 // Middleware for Authentication
 import { AuthUser } from "../middleware/AuthUser.js";
 
 import multer from "multer"
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null,"uploads/");
-    },
-    filename: (req, file, cb) => {
-      // Use a unique filename for each uploaded file
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-      cb(null, file.fieldname + '-' + uniqueSuffix + '.' + file.mimetype.split('/')[1]);
-    },
-  });
-  
-  const upload = multer({ dest:"uploads/" });
+  destination: (req, file, cb) => {
+    cb(null, "/uploads");
+  },
+  filename: (req, file, cb) => {
+    // Use a unique filename for each uploaded file
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, file.fieldname + '-' + uniqueSuffix + '.' + file.mimetype.split('/')[1]);
+  },
+});
+
+const upload = multer({ storage });
 
 // ----------------ROUTES-----------------
 
