@@ -19,7 +19,7 @@ import { AuthUser } from "../middleware/AuthUser.js";
 import multer from "multer"
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null,"../client/src/imges/");
+      cb(null,"./upload/");
     },
     filename: (req, file, cb) => {
       // Use a unique filename for each uploaded file
